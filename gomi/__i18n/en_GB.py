@@ -1,4 +1,10 @@
-UNHANDLED_ARC_FMT_1 = 'Unhandled archive format "{}". Please report to request a feature update.'
+CANT_PROPOSE_COMMON_PARENT_FOR_LOG_1 = 'Cannot find a common parent dir of the inputs. The log will be saved to "{}".'
+FOUND_HDD_1 = 'Found HDD "{}".'
 FOUND_PWD_PROTECTED_1 = 'Found password protected archive: "{}".'
+FOUND_SSD_1 = 'Found SSD "{}".'
+GOT_NO_INPUT_0 = "Got no (valid) input."
 INCORRECT_PWD_1 = 'Incorrect password: "{}".'
 PROMPT_PWD_0 = "Please input the password (or ctrl+c to give up): "
+SSD_CHECKER_KEY_ERROR_1 = 'KeyError when checking if it\'s SSD for "{}".'
+SSD_CHECKER_UNK_ERROR_2 = 'Unknown error {} when checking if it\'s SSD for "{}".'
+UNHANDLED_ARC_FMT_1 = 'Unhandled archive format "{}". Please report to request a feature update.'

@@ -7,3 +7,4 @@ pyzipper
 rarfile
 tqdm
 webptools
+ssd-checker
