@@ -1,16 +1,18 @@
 __all__ = [
-    "listFile",
+    "condenseDirLayout",
+    "findCommonParentDir",
     "listDir",
+    "listFile",
+    "proposeDstParentDir",
+    "proposeFilePath",
+    "tryCopy",
+    "tryHardlink",
+    "tryHardlinkThenCopy",
+    "tryMkDir",
     "tstFileEncoding",
     "tstMkHardlink",
-    "tstMkHardlinks",
     "tstMkHardlinkInDir",
-    "tryHardlinkThenCopy",
-    "tryHardlink",
-    "tryMkDir",
-    "tryCopy",
-    "findCommonParentDir",
-    "condenseDirLayout",
+    "tstMkHardlinks",
 ]
 
 import sys  # fmt: skip
@@ -21,9 +23,11 @@ import os
 import random
 from os import PathLike
 from pathlib import Path
+from logging import Logger
 from typing import Optional, Sequence, Union
 
 from .vars import DEBUG
+from .__i18n import CANT_PROPOSE_COMMON_PARENT_FOR_LOG_1, GOT_NO_INPUT_0
 
 import shutil
 
@@ -112,6 +116,38 @@ def findCommonParentDir(paths: Sequence[str | Path]) -> Path | None:
     if common_prefix.is_dir():
         return common_prefix
     return common_prefix.parent
+
+
+def proposeFilePath(paths: Sequence[Path], dst_filename: str, logger: Optional[Logger] = None) -> Path:
+    paths = list(paths)
+    if not paths:
+        raise ValueError(GOT_NO_INPUT_0)
+    call = logger.info if logger else (lambda msg: print(msg))
+    common_parent = findCommonParentDir(paths)
+    if not common_parent:
+        dst_path = paths[0].parent / dst_filename
+        call(CANT_PROPOSE_COMMON_PARENT_FOR_LOG_1.format(dst_path))
+    elif common_parent.is_dir():
+        dst_path = common_parent / dst_filename
+    else:
+        dst_path = common_parent.parent / dst_filename
+    return dst_path
+
+
+def proposeDstParentDir(paths: Sequence[Path], logger: Optional[Logger] = None) -> Path:
+    paths = list(paths)
+    if not paths:
+        raise ValueError(GOT_NO_INPUT_0)
+    call = logger.info if logger else (lambda msg: print(msg))
+    common_parent = findCommonParentDir(paths)
+    if not common_parent:
+        dst_parent = paths[0].parent.parent
+        call(CANT_PROPOSE_COMMON_PARENT_FOR_LOG_1.format(dst_parent))
+    elif common_parent.is_dir():
+        dst_parent = common_parent.parent
+    else:
+        dst_parent = common_parent.parent.parent
+    return dst_parent
 
 
 def condenseDirLayout(root: Path):
