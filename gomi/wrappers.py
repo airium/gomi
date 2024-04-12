@@ -3,6 +3,7 @@ __all__ = ["tryCall", "tryMain", "tryTimedMain", "callTimed"]
 import time
 import traceback
 from typing import Callable
+
 from .strings import YYMMDD_HHMMSS
 
 _START_1 = "Started at {time}"

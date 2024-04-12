@@ -1,5 +1,9 @@
 __all__ = ["extract1", "extractN"]
 
+import sys  # fmt: skip
+if sys.version_info < (3, 10):
+    raise RuntimeError("This module requires Python 3.10.")
+
 import re
 from typing import Optional
 

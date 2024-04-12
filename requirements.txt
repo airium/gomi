@@ -1,0 +1,9 @@
+ffmpeg
+langdetect
+psutil
+py7zr
+pymediainfo
+pyzipper
+rarfile
+tqdm
+webptools

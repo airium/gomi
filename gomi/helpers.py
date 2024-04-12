@@ -1,6 +1,4 @@
 import sys
-
-import warnings
 from typing import Sequence, Any
 
 if sys.version_info >= (3, 10):

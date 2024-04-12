@@ -1,4 +1,4 @@
-__all__ = ["preparePath"]
+__all__ = ["preparePath", "readFile", "writeFile", "read", "write"]
 
 import os
 from pathlib import Path
@@ -40,5 +40,6 @@ def writeFile(path: os.PathLike, data: str | bytes, encoding: Optional[str] = No
         path.write_bytes(data)
     else:
         raise ValueError(f"Invalid type of data: {type(data)}")
+
 
 write = writeFile
