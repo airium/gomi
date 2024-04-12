@@ -1,10 +1,12 @@
 """This module provides bencode and bdecode functions."""
 
-__all__ = ["bencode", "bdecode", "bdecode4torrent"]
+__all__ = ["bencode", "bdecode"]
+
+import sys  # fmt: skip
+if sys.version_info < (3, 10):
+    raise RuntimeError("This module requires Python 3.10.")
 
 import re
-import codecs
-from typing import Optional
 from functools import partial
 
 
@@ -73,26 +75,7 @@ def _decode(obj: int | str | bytes | list | dict, encoding: str) -> str | int | 
         raise TypeError(f"Bdecode for torrent expects int|str|bytes|list|dict, not {type(obj)}.")
 
 
-def bdecode4torrent(bchars: bytes, encoding: Optional[str] = None) -> dict[str, int | str | list | dict]:
-
-    d = bdecode(bchars)
-    if not isinstance(d, dict):
-        raise TypeError(f"Expect bdecoded dict, not {type(d)}.")
-    try:
-        _encoding = d.get(b"encoding")
-        assert isinstance(_encoding, bytes)
-        _encoding = _encoding.decode(encoding or _ENCODING)
-        codecs.lookup(_encoding)
-    except Exception:
-        _encoding = encoding or _ENCODING
-
-    d = _decode(d, _encoding)
-    if not isinstance(d, dict):
-        raise TypeError(f"Expect decoded dict, not {type(d)}.")
-    return d
-
-
-def bencode(obj: int | str | bytes | list | dict, encoding: str = "utf-8") -> bytes:
+def bencode(obj: int | str | bytes | list | dict, encoding: str = _ENCODING) -> bytes:
 
     if isinstance(obj, bytes):
         return str(len(obj)).encode(encoding) + b":" + obj
