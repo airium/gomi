@@ -1,11 +1,17 @@
 __all__ = ["preparePath", "readFile", "writeFile", "read", "write"]
 
+import sys  # fmt: skip
+if sys.version_info < (3, 10):
+    raise RuntimeError("This module requires Python 3.10.")
+
 import os
 from pathlib import Path
 from typing import Optional
 
+PathObj = Path | str | os.PathLike
 
-def preparePath(path, filename, overwrite=False) -> Path:
+
+def preparePath(path: PathObj, filename: str, overwrite: bool = False) -> Path:
     path = Path(path)
     if path.is_file():
         if not overwrite:
@@ -17,7 +23,7 @@ def preparePath(path, filename, overwrite=False) -> Path:
     return path
 
 
-def readFile(path: os.PathLike, encoding: Optional[str] = None) -> str | bytes:
+def readFile(path: PathObj, encoding: Optional[str] = None) -> str | bytes:
     path = Path(path)
     if not path.is_file():
         raise FileNotFoundError(f"File not found: {path}")
@@ -30,7 +36,7 @@ def readFile(path: os.PathLike, encoding: Optional[str] = None) -> str | bytes:
 read = readFile
 
 
-def writeFile(path: os.PathLike, data: str | bytes, encoding: Optional[str] = None):
+def writeFile(path: PathObj, data: str | bytes, encoding: Optional[str] = None):
     path = Path(path)
     if encoding and isinstance(data, str):
         path.write_text(data, encoding=encoding)

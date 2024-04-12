@@ -78,6 +78,7 @@ async def _getAsyncN_v1(
         async with httpx.AsyncClient() as client:
             return await gather(*[client.get(url, **kwargs) for url in urls])
 
+
 async def _getAsyncN_v2(
     urls: list[str],
     _rate: Optional[int] = None,
@@ -96,7 +97,6 @@ async def _getAsyncN_v2(
     timeout = httpx.Timeout(timeout=_timeout, connect=10)
     async with httpx.AsyncClient(limits=limit, timeout=timeout) as client:
         return await gather(*[client.get(url, **kwargs) for url in urls])
-
 
 
 async def _getAsyncN(
