@@ -1,5 +1,8 @@
+__all__ = ["TimeRecorder", "TR"]
+
 import time
 from typing import Optional
+from .strings import YYMMDD_HHMMSS
 
 
 class TimeRecorder:
@@ -8,11 +11,14 @@ class TimeRecorder:
         self._messages = []
 
         if start:
-            self.mark("Immediately start at init")
+            self.mark()
+
+    def __len__(self):
+        return len(self._messages)  #! dont change to len(self._timings)
 
     def mark(self, message: Optional[str] = None):
         self._timings.append(time.time())
-        self._messages.append(message or "")
+        self._messages.append(message or (str(YYMMDD_HHMMSS) if (len(self) == 0) else "") or "")
 
     def print(self, reset=False):
         if len(self._timings) < 2:
@@ -22,7 +28,7 @@ class TimeRecorder:
         t_stt, t_end = self._timings[0], self._timings[-1]
         t_all = t_end - t_stt
         t_pre = self._timings[0]
-        for i, (t_now, m) in enumerate(zip(self._timings, self._messages)):
+        for i, (t_now, m) in enumerate(zip(self._timings[1:], self._messages[1:]), start=1):
             print(f"{i:>02d} @{t_now - t_stt:.3e} Δ{(dt := t_now - t_pre):.3e} ({dt/t_all:>5.1%}): {m}")
             t_pre = t_now
 
