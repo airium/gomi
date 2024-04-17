@@ -5,23 +5,24 @@ This version includes improvement and additional functions.
 
 import platform
 import subprocess
+from os import PathLike
 from typing import Optional, Union
 from pathlib import Path
 
 from ..chars import quote
 
-
 import webptools
 
+PathObj = Union[str, PathLike]
 WEBTOOLS_MOD_LIB = Path(webptools.__file__).absolute().parent.parent / "lib"
 
 _DEFAULT_WEBP_QUALITY = 90
 
 
-__all__ = ["getCwebpBin", "getDwebpBin", "getWebpQualityBin", "cwebp", "dwebp", "tstDwebp", "getWebpQuality"]
+__all__ = ["get_cwebp_bin", "get_dwebp_bin", "get_webpquality_bin", "cwebp", "dwebp", "test_dwebp", "webpquality"]
 
 
-def getCwebpBin(bin_path: Optional[Union[str, Path]] = None) -> str:
+def get_cwebp_bin(bin_path: Optional[PathObj] = None) -> str:
     if bin_path is None:
         match platform.system():
             case "Linux":
@@ -43,10 +44,10 @@ def getCwebpBin(bin_path: Optional[Union[str, Path]] = None) -> str:
     elif isinstance(bin_path, str):
         return bin_path
     else:
-        raise TypeError("Unsupported input type", type(bin_path))
+        raise TypeError(f"Unsupported input type {type(bin_path)}")
 
 
-def getDwebpBin(bin_path: Optional[Union[str, Path]] = None) -> str:
+def get_dwebp_bin(bin_path: Optional[Union[str, Path]] = None) -> str:
     if bin_path is None:
         match platform.system():
             case "Linux":
@@ -68,10 +69,10 @@ def getDwebpBin(bin_path: Optional[Union[str, Path]] = None) -> str:
     elif isinstance(bin_path, str):
         return bin_path
     else:
-        raise TypeError("Unsupported input type", type(bin_path))
+        raise TypeError(f"Unsupported input type {type(bin_path)}")
 
 
-def getWebpQualityBin(bin_path: str | Path | None) -> str:
+def get_webpquality_bin(bin_path: Optional[PathObj] = None) -> str:
     if bin_path is None:
         match platform.system():
             case "Linux":
@@ -93,13 +94,13 @@ def getWebpQualityBin(bin_path: str | Path | None) -> str:
     elif isinstance(bin_path, str):
         return bin_path
     else:
-        raise TypeError("Unsupported input type", type(bin_path))
+        raise TypeError(f"Unsupported input type {type(bin_path)}")
 
 
 def cwebp(input_path: str, output_path: str, option: str, logging: str = "-v", bin_path: str | None = None) -> dict:
     """Modified from webptools.cwebp"""
 
-    bin_path = quote(bin_path if bin_path else getCwebpBin(bin_path=bin_path))
+    bin_path = quote(bin_path if bin_path else get_cwebp_bin(bin_path=bin_path))
     input_path = quote(input_path)
     cmd = f"{bin_path} {option} {logging} {input_path} -o {output_path}"
     p = subprocess.Popen(cmd, shell=True, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -111,7 +112,7 @@ def cwebp(input_path: str, output_path: str, option: str, logging: str = "-v", b
 def dwebp(input_path: str, output_path: str, option: str, logging: str = "-v", bin_path: str | None = None) -> dict:
     """Modified from webptools.dwebp"""
 
-    bin_path = quote(bin_path if bin_path else getDwebpBin(bin_path=bin_path))
+    bin_path = quote(bin_path if bin_path else get_dwebp_bin(bin_path=bin_path))
     input_path = quote(input_path)
     cmd = f"{bin_path} {option} {logging} {input_path} -o {output_path}"
     p = subprocess.Popen(cmd, shell=True, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -121,10 +122,10 @@ def dwebp(input_path: str, output_path: str, option: str, logging: str = "-v", b
     return result
 
 
-def tstDwebp(input_path: str, bin_path: str | None = None) -> dict:
+def test_dwebp(input_path: str, bin_path: str | None = None) -> dict:
     """Modified from webptools.dwebp"""
 
-    bin_path = quote(bin_path if bin_path else getDwebpBin(bin_path=bin_path))
+    bin_path = quote(bin_path if bin_path else get_dwebp_bin(bin_path=bin_path))
     input_path = quote(input_path)
     cmd = f"{bin_path} {input_path}"
     p = subprocess.Popen(cmd, shell=True, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -133,16 +134,15 @@ def tstDwebp(input_path: str, bin_path: str | None = None) -> dict:
     return result
 
 
-def getWebpQuality(input_path: str, bin_path: str | None = None) -> int:
+def webpquality(webp_path: PathObj, bin: Optional[PathObj] = None) -> int:
     """
-    Use `webp_quality` to estimate the `q` encoding parameter.
-
-    Return: int: The estimated `q`, or 0 if failed.
+    Estimate the quality of a WebP image with `webp_quality`.
+    Return the estimated `q` value, or 0 if failed.
     """
 
-    bin_path = quote(bin_path if bin_path else getWebpQualityBin(bin_path=bin_path))
-    input_path = quote(input_path)
-    cmd = f"{bin_path} -quiet {input_path}"
+    bin = quote(bin if bin else get_webpquality_bin(bin_path=bin))
+    webp_path = quote(webp_path)
+    cmd = f"{bin} -quiet {webp_path}"
     p = subprocess.Popen(cmd, shell=True, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (stdout, stderr) = p.communicate()
     result = {"exit_code": p.returncode, "stdout": stdout, "stderr": stderr, "command": cmd}

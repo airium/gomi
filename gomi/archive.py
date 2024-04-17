@@ -10,13 +10,13 @@ __all__ = [
     "getFileList",
 ]
 
-import sys
-
+import sys  # fmt: skip
 if sys.version_info < (3, 10):
     raise RuntimeError("This module requires Python 3.10.")
 
 from pathlib import Path
 from typing import Optional
+
 
 import py7zr
 import rarfile

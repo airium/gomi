@@ -1,10 +1,4 @@
-__all__ = [
-    "MI",
-    "MediaInfo",
-    "parse",
-    "getMediaInfo",
-    "getMediaInfoList",
-]
+__all__ = ["MI", "MediaInfo", "parse", "getMediaInfo", "getMediaInfoList"]
 
 from pathlib import Path
 from multiprocessing import Pool
