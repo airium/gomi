@@ -1,8 +1,9 @@
-__all__ = ["readPickle", "writePickle", "readPKL", "writePKL"]
+__all__ = ["readPickle", "writePickle", "readPKL", "writePKL", "getSize"]
 
-
-from pathlib import Path
 import pickle
+from pathlib import Path
+
+_ENCODINGS = ("ASCII", "UTF-8", "Latin1")
 
 
 def readPickle(path, encoding=None):
@@ -12,7 +13,7 @@ def readPickle(path, encoding=None):
     if isinstance(encoding, str) and encoding:
         return pickle.loads(Path(path).read_bytes(), encoding=encoding)
     elif encoding is None:
-        for encoding in ("utf-8", "latin1"):
+        for encoding in _ENCODINGS:
             try:
                 return pickle.loads(Path(path).read_bytes(), encoding=encoding)
             except UnicodeDecodeError:
@@ -20,6 +21,9 @@ def readPickle(path, encoding=None):
         raise UnicodeError(f'Failed to decode pickle file "{path}"')
     else:
         raise ValueError(f'Invalid "{path}"')
+
+
+readPKL = readPickle
 
 
 def writePickle(obj, path, overwrite=False):
@@ -30,5 +34,10 @@ def writePickle(obj, path, overwrite=False):
     Path(path).write_bytes(pickle.dumps(obj))
 
 
-readPKL = readPickle
 writePKL = writePickle
+
+
+def getSize(obj) -> int:
+    size = len(pobj := pickle.dumps(obj))
+    del pobj
+    return size
