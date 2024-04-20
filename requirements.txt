@@ -5,6 +5,9 @@ asynciolimiter
 ffmpeg-python
 httpx
 langdetect
+numpy
+pdir
+pprint
 psutil
 py7zr
 pymediainfo
