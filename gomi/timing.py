@@ -25,11 +25,12 @@ class TimeRecorder:
             print("No enough timings to print")
             return
 
-        t_stt, t_end = self._timings[0], self._timings[-1]
-        t_all = t_end - t_stt
+        t_stt = self._timings[0]
+        t_all = self._timings[-1] - t_stt
         t_pre = self._timings[0]
         for i, (t_now, m) in enumerate(zip(self._timings[1:], self._messages[1:]), start=1):
-            print(f"{i:>02d} @{t_now - t_stt:.3e} Δ{(dt := t_now - t_pre):.3e} ({dt/t_all:>5.1%}): {m}")
+            dt = t_now - t_pre
+            print(f"{i:>02d} @{t_now - t_stt:.3e} Δ{dt:.3e} ({dt/t_all:>5.1%}): {m}")
             t_pre = t_now
 
         if reset:
