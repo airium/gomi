@@ -83,19 +83,16 @@ def _rprint(obj: Any, indent=0, newline=False):
 
 
 def rprint(obj: Any, indent=0, self=True, depth=MAX_DEPTH):
-    depth -= 1
     if self:
         _rprint(obj, indent=indent, newline=True)
+    depth -= 1
+    if depth < 0:
+        print("Max depth reached. Stop.")
+        return
     if isinstance(obj, list) or isinstance(obj, tuple):
-        if depth < 0:
-            print("Max depth reached. Stop.")
-            return
         for i in obj:
             rprint(i, indent=indent + INDENT_WIDTH, depth=depth)
     elif isinstance(obj, dict):
-        if depth < 0:
-            print("Max depth reached. Stop.")
-            return
         for k, v in obj.items():
             print(" " * (indent + INDENT_WIDTH) + embolden(k) + " : ", end="")
             _rprint(v, indent=0, newline=True)
