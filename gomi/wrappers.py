@@ -15,7 +15,7 @@ def _exit_prompt(wait: int = 5):
     for i in range(max(wait, 1), 0, -1):
         print(EXITING_IN_1.format(time=i), end="\r")
         time.sleep(1)
-    print(EXITING_0)
+    print(EXITING_0, end=" " * 10)
 
 
 def tryCall(_callable: Callable, *args, **kwargs):
