@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 __all__ = ["unquote", "quote", "isDecimal"]
 
 from typing import Optional

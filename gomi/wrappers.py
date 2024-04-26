@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 __all__ = ["tryCall", "tryMain", "tryTimedMain", "callTimed"]
 
 import time

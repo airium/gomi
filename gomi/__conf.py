@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 __all__ = ["relative2gomi"]
 
 import importlib.util

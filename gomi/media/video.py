@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 __all__ = ["gvfc", "get_video_framecount"]
 
 from .mediainfo import getMediaInfo

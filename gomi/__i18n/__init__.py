@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import locale as __locale
 
 __LANGUAGE = __locale.getdefaultlocale()[0]

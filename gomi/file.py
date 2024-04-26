@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 __all__ = ["getFileCRC32", "getFileSHA1", "File"]
 
 import sys

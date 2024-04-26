@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 __all__ = ["extract1", "extractN"]
 
 import sys  # fmt: skip

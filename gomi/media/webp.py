@@ -3,6 +3,8 @@ This module is modified from `scionoftech/webptools` <https://github.com/scionof
 This version includes improvement and additional functions.
 """
 
+from __future__ import annotations
+
 import platform
 import subprocess
 from os import PathLike
@@ -134,7 +136,7 @@ def test_dwebp(input_path: str, bin_path: str | None = None) -> dict:
     return result
 
 
-def webpquality(webp_path: PathObj, bin: Optional[PathObj] = None) -> int:
+def webpquality(webp_path: str, bin: Optional[str] = None) -> int:
     """
     Estimate the quality of a WebP image with `webp_quality`.
     Return the estimated `q` value, or 0 if failed.

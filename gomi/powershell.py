@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 __all__ = ["powershell"]
 
 import sys  # fmt: skip

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 __all__ = ["MI", "MediaInfo", "parse", "getMediaInfo", "getMediaInfoList"]
 
 from pathlib import Path

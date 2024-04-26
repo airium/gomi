@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 CANT_PROPOSE_COMMON_PARENT_FOR_LOG_1 = 'Cannot find a common parent dir of the inputs. The log will be saved to "{}".'
 FOUND_HDD_1 = 'Found HDD "{}".'
 FOUND_PWD_PROTECTED_1 = 'Found password protected archive: "{}".'

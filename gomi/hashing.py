@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 __all__ = ["toSHA1", "toCRC32"]
 
 import sys

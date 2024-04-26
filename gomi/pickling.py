@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 __all__ = ["readPickle", "writePickle", "readPKL", "writePKL", "getSize"]
 
 import pickle

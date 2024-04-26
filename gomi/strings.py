@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 __all__ = ["YYMMDD", "HHMMSS", "YYMMDD_HHMMSS"]
 
 

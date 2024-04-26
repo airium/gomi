@@ -1,5 +1,7 @@
 """This module provides bencode and bdecode functions."""
 
+from __future__ import annotations
+
 __all__ = ["bencode", "bdecode"]
 
 import sys  # fmt: skip

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import sys  # fmt: skip
 if sys.version_info < (3, 10):
     raise RuntimeError("This module requires Python 3.10.")

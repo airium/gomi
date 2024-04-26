@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 __all__ = ["preparePath", "readFile", "writeFile", "read", "write"]
 
 import sys  # fmt: skip
