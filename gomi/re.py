@@ -2,15 +2,11 @@ from __future__ import annotations
 
 __all__ = ["extract1", "extractN"]
 
-import sys  # fmt: skip
-if sys.version_info < (3, 10):
-    raise RuntimeError("This module requires Python 3.10.")
-
 import re
-from typing import Optional
+from typing import Optional, Union
 
 
-def extract1(pattern: re.Pattern | str, text: str, group: Optional[str | int] = None) -> str | None:
+def extract1(pattern: Union[re.Pattern, str], text: str, group: Optional[Union[str, int]] = None) -> Optional[str]:
     if match := re.search(pattern, text):
         if group:
             return match.group(group)
@@ -18,5 +14,11 @@ def extract1(pattern: re.Pattern | str, text: str, group: Optional[str | int] = 
     return None
 
 
-def extractN(pattern, text, group, idx) -> list[str] | None:
+reget_1 = extract1
+
+
+def extractN(pattern, text, group, idx) -> Optional[list[str]]:
     raise NotImplementedError
+
+
+reget_n = extractN

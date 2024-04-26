@@ -1,18 +1,16 @@
 from __future__ import annotations
 
-from typing import Union
-from pathlib import Path
-
-
 import shutil
+from typing import Optional, Union
 from pathlib import Path
+
+import ffmpeg
+import numpy as np
+
 
 from .webp import _DEFAULT_WEBP_QUALITY
 from .jpeg import _DEFAULT_JPEG_QUALITY
 from ..fs import tryHardlink
-
-import ffmpeg
-import numpy as np
 
 
 def tstFFmpegDecode(path: Path) -> bool:
@@ -51,7 +49,7 @@ def toWebp(
     dst: Path,
     quality: int = _DEFAULT_WEBP_QUALITY,
     lossless: bool = False,
-    resize: tuple[int, int] | None = None,
+    resize: Optional[tuple[int, int]] = None,
 ) -> bool:
     if not src.is_file():
         return False
@@ -154,7 +152,7 @@ def replaceIfSmaller(src: Path, dst: Path, bit: int, **kwds) -> bool:
     return True
 
 
-def getDimension(path: Path, idx: int = 0) -> tuple[int, int] | None:
+def getDimension(path: Path, idx: int = 0) -> Optional[tuple[int, int]]:
     if not path.is_file():
         return None
     w, h = 0, 0

@@ -1,15 +1,13 @@
 from __future__ import annotations
 
-import sys  # fmt: skip
-if sys.version_info < (3, 10):
-    raise RuntimeError("This module requires Python 3.10.")
 
+from typing import Optional
 from types import ModuleType, FunctionType
 
 __all__ = ["importMod", "importFunc"]
 
 
-def importMod(module: str, package: str | None = None) -> ModuleType:
+def importMod(module: str, package: Optional[str] = None) -> ModuleType:
     try:
         return __import__(module)
     except ImportError:
@@ -17,7 +15,7 @@ def importMod(module: str, package: str | None = None) -> ModuleType:
         exit(1)
 
 
-def importFunc(module: str, function: str, pkg_name: str | None = None) -> FunctionType:
+def importFunc(module: str, function: str, pkg_name: Optional[str] = None) -> FunctionType:
     try:
         return getattr(__import__(module), function)
     except ImportError:

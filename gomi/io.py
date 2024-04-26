@@ -20,7 +20,7 @@ def preparePath(path: PathObj, filename: str, overwrite: bool = False) -> Path:
     return path
 
 
-def readFile(path: PathObj, encoding: Optional[str] = None) -> str | bytes:
+def readFile(path: PathObj, encoding: Optional[str] = None) -> Union[str, bytes]:
     path = Path(path)
     if not path.is_file():
         raise FileNotFoundError(f"File not found: {path}")

@@ -35,8 +35,8 @@ import shutil
 
 
 def listFile(
-    *paths,
-    ext: Optional[str | Sequence[str]] = None,
+    *paths,  #! the argument is of PyTorch style
+    ext: Optional[Union[str, Sequence[str]]] = None,
     rglob: bool = True,
     reduce: bool = True,
     sort: bool = True,
@@ -59,7 +59,12 @@ def listFile(
     return ret
 
 
-def listDir(*inp_paths, rglob: bool = True, reduce: bool = True, sort: bool = True) -> list[Path]:
+def listDir(
+    *inp_paths,  #! the argument is of PyTorch style
+    rglob: bool = True,
+    reduce: bool = True,
+    sort: bool = True,
+) -> list[Path]:
     inp_paths = list(Path(Path(p).as_posix()) for p in inp_paths)
     ret: list[Path] = []
     for p in inp_paths:
@@ -96,7 +101,7 @@ def tstFileEncoding(path: Path, encoding: str = "utf-8-sig") -> bool:
     return True
 
 
-def findCommonParentDir(paths: Sequence[str | Path]) -> Path | None:
+def findCommonParentDir(paths: Sequence[Union[str, Path]]) -> Optional[Path]:
 
     ps = [Path(p).resolve() for p in paths]
 
@@ -198,7 +203,7 @@ def tryMkDir(path: PathObj, parents: bool = True, exist_ok: bool = True) -> bool
         return False
 
 
-def tryCopy(src: PathObj, dst: str | Path) -> bool:
+def tryCopy(src: PathObj, dst: Union[str, Path]) -> bool:
     src = Path(src)
     dst = Path(dst)
     remove_dst = not dst.is_file()
