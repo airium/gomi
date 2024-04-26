@@ -23,17 +23,15 @@ if sys.version_info < (3, 10):
 
 import os
 import random
-from os import PathLike
 from pathlib import Path
 from logging import Logger
 from typing import Optional, Sequence, Union
 
 from .vars import DEBUG
 from .__i18n import CANT_PROPOSE_COMMON_PARENT_FOR_LOG_1, GOT_NO_INPUT_0
+from .__utils import PathObj
 
 import shutil
-
-PathObj = Union[PathLike, str]
 
 
 def listFile(

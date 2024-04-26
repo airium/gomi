@@ -2,15 +2,10 @@ from __future__ import annotations
 
 __all__ = ["preparePath", "readFile", "writeFile", "read", "write"]
 
-import sys  # fmt: skip
-if sys.version_info < (3, 10):
-    raise RuntimeError("This module requires Python 3.10.")
-
-import os
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
-PathObj = Path | str | os.PathLike
+from .__utils import PathObj
 
 
 def preparePath(path: PathObj, filename: str, overwrite: bool = False) -> Path:
@@ -38,7 +33,7 @@ def readFile(path: PathObj, encoding: Optional[str] = None) -> str | bytes:
 read = readFile
 
 
-def writeFile(path: PathObj, data: str | bytes, encoding: Optional[str] = None):
+def writeFile(path: PathObj, data: Union[str, bytes], encoding: Optional[str] = None):
     path = Path(path)
     if encoding and isinstance(data, str):
         path.write_text(data, encoding=encoding)

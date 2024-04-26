@@ -14,8 +14,9 @@ from os import PathLike
 from pathlib import Path
 from typing import Union
 
+from .__utils import PathObj
 
-PathObj = Union[PathLike, str]
+
 _IO_SIZE = 16 * 2**20  # 16 MiB
 
 
