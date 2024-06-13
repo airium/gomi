@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 __all__ = [
+    "WindowsPathJ",
     "condenseDirLayout",
     "findCommonParentDir",
     "listDir",
@@ -23,15 +24,37 @@ if sys.version_info < (3, 10):
 
 import os
 import random
-from pathlib import Path
+import warnings
+from pathlib import Path, WindowsPath
 from logging import Logger
 from typing import Optional, Sequence, Union
+
 
 from .vars import DEBUG
 from .__i18n import CANT_PROPOSE_COMMON_PARENT_FOR_LOG_1, GOT_NO_INPUT_0
 from .__utils import PathObj
 
 import shutil
+
+if os.name == "nt":
+    from _winapi import CreateJunction
+
+    class WindowsPathJ(WindowsPath):
+        # WindowsPath class with Windows junction creation method
+
+        def __new__(cls, *args, **kwargs):
+            return super().__new__(cls, *args, **kwargs)
+
+        def junction_to(self, target: WindowsPath):
+            """Make this path a junction the same directory as `target`."""
+            CreateJunction(str(target), str(self))
+
+else:
+
+    class WindowsPathJ(WindowsPath):
+        def __new__(cls, *args, **kwargs):
+            warnings.warn("WindowsPathJ on a platform other than Windows offers no `junction_to` member function.")
+            return super().__new__(cls, *args, **kwargs)
 
 
 def listFile(
