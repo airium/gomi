@@ -8,39 +8,38 @@ from .strings import YYMMDD_HHMMSS
 
 
 class TimeRecorder:
-    def __init__(self, start=False):
-        self._timings = []
-        self._messages = []
+    def __init__(self, start: bool = False):
+        self._timing_message_pairs: list[tuple[float, str]] = []
 
         if start:
             self.mark()
 
     def __len__(self):
-        return len(self._messages)  #! dont change to len(self._timings)
+        return len(self._timing_message_pairs)
 
     def mark(self, message: Optional[str] = None):
-        self._timings.append(time.time())
-        self._messages.append(message or (str(YYMMDD_HHMMSS) if (len(self) == 0) else "") or "")
+        _timing = time.time()
+        _message = message or (str(YYMMDD_HHMMSS) if (len(self) == 0) else "")
+        self._timing_message_pairs.append((_timing, _message))
 
-    def print(self, reset=False):
-        if len(self._timings) < 2:
+    def print(self, reset: bool = False):
+        if len(self._timing_message_pairs) < 2:
             print("No enough timings to print")
             return
 
-        t_stt = self._timings[0]
-        t_all = self._timings[-1] - t_stt
-        t_pre = self._timings[0]
-        for i, (t_now, m) in enumerate(zip(self._timings[1:], self._messages[1:]), start=1):
+        t_stt = self._timing_message_pairs[0][0]
+        t_all = self._timing_message_pairs[-1][0] - t_stt
+        t_pre = self._timing_message_pairs[0][0]
+        for i, (t_now, msg) in enumerate(self._timing_message_pairs, start=0):
             dt = t_now - t_pre
-            print(f"{i:>02d} @{t_now - t_stt:.3e} Δ{dt:.3e} ({dt/t_all:>5.1%}): {m}")
+            print(f"{i:>02d} @{t_now - t_stt:.3e} Δ{dt:.3e} ({dt/t_all:>5.1%}): {msg}")
             t_pre = t_now
 
         if reset:
             self.reset()
 
     def reset(self):
-        self._timings = []
-        self._messages = []
+        self._timing_message_pairs.clear()
 
 
 TR = TimeRecorder
