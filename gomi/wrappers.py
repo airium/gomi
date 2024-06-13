@@ -10,14 +10,14 @@ from .strings import YYMMDD_HHMMSS
 from .__i18n import *
 
 
-__EXIT_WAIT = 5
+__EXIT_WAIT = 300
 
 
 def _exit_prompt(wait: int = 5):
     for i in range(max(wait, 1), 0, -1):
         print(EXITING_IN_1.format(time=i), end="\r")
         time.sleep(1)
-    print(EXITING_0, end=" " * 10)
+    print(EXITING_0, end=" " * 10 + "\n")
 
 
 def tryCall(_callable: Callable, *args, **kwargs):
