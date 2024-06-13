@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-__all__ = ["rprint", "embolden", "pprint", "pdir"]
+
+__all__ = ["rprint", "embolden", "pprint", "pdir", "printLine"]
 
 try:
     from pprint import pprint
@@ -12,8 +13,8 @@ try:
 except ImportError:
     print("pdir not found (pdir2)")
 
-from typing import Any
-from os import linesep
+from typing import Any, Optional
+from os import linesep, get_terminal_size
 
 INDENT_WIDTH = 4
 MAX_DEPTH = 3
@@ -99,3 +100,16 @@ def rprint(obj: Any, indent=0, self=True, depth=MAX_DEPTH):
             print(" " * (indent + INDENT_WIDTH) + embolden(k) + " : ", end="")
             _rprint(v, indent=0, newline=True)
             rprint(v, indent=indent + INDENT_WIDTH, self=False, depth=depth)
+
+
+def printLine(*chars, trailing_char: str = "=", width: Optional[int] = None, **kwargs):
+    chars_left = " ".join(str(s) for s in chars)
+    if width is None:
+        width = get_terminal_size().columns
+    trailing_char = trailing_char[:1] if trailing_char else "="
+    while True:
+        chars_slice, chars_left = chars_left[: width * 3 // 4], chars_left[width * 3 // 4 :]
+        tchar = trailing_char if (not chars_left) else "-"
+        if not chars_slice:
+            break
+        print(chars_slice + " " + tchar * (width - len(chars_slice) - 1), **kwargs)
